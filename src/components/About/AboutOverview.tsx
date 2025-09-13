@@ -46,7 +46,7 @@ export default function AboutOverview({
   promoHref = "/",
 }: AboutOverviewProps) {
   return (
-    <section className="w-full bg-gradient-to-b from-black to-gray-900 text-white pt-20 md:pt-28 overflow-hidden relative">
+    <section className="w-full bg-gradient-to-b from-black to-gray-900 text-white pt-20 md:pt-28 overflow-hidden relative py-8">
       {/* Background decorative elements */}
       <div className="absolute top-20 left-10 w-32 h-32 border border-white/5 rounded-full opacity-30"></div>
       <div className="absolute bottom-40 right-16 w-24 h-24 border border-yellow-400/10 rounded-full opacity-20"></div>

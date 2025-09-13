@@ -25,13 +25,13 @@ const MENU: MenuItem[] = [
   { href: "/", label: "Home" },
   { href: "/about", label: "About" },
   {
-    href: "/opere",
+    href: "/portfolio",
     label: "Paintings",
     children: [
-      { href: "/opere/fetzen", label: "Collezione Fetzen" },
-      { href: "/opere/riflessi", label: "Collezione Riflessi" },
-      { href: "/opere/ossidazioni", label: "Collezione Ossidazioni" },
-      { href: "/opere/specchi", label: "Collezione Specchi" },
+      { href: "/portfolio/fetzen", label: "Collezione Fetzen" },
+      { href: "/portfolio/riflessi", label: "Collezione Riflessi" },
+      { href: "/portfolio/ossidazioni", label: "Collezione Ossidazioni" },
+      { href: "/portfolio/specchi", label: "Collezione Specchi" },
     ],
   },
   { href: "/eventi", label: "Exhibitions" },
