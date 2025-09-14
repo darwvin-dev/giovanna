@@ -34,8 +34,8 @@ const MENU: MenuItem[] = [
       { href: "/portfolio/specchi", label: "Collezione Specchi" },
     ],
   },
-  { href: "/eventi", label: "Exhibitions" },
-  { href: "/contatti", label: "Contact" },
+  { href: "/blog", label: "Exhibitions" },
+  { href: "/contact-us", label: "Contact" },
 ];
 
 export default function Header() {

@@ -2,10 +2,10 @@ import Link from "next/link";
 
 const LINKS = [
   { href: "/", label: "Home" },
-  { href: "/chi-sono", label: "About" },
-  { href: "/opere", label: "Opere" },            
-  { href: "/eventi", label: "Mostre / Eventi" }, 
-  { href: "/contatti", label: "Contact" },
+  { href: "/about", label: "About" },
+  { href: "/portfolio", label: "Opere" },            
+  { href: "/blog", label: "Mostre / Eventi" }, 
+  { href: "/contact-us", label: "Contact" },
 ];
 
 export default function Footer() {

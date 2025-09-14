@@ -1,0 +1,6 @@
+@import "tailwindcss";
+@plugin 'tailwind-scrollbar';
+
+.container {
+  @apply max-w-6xl mx-auto px-5;
+}
