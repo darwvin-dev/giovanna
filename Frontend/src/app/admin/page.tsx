@@ -16,8 +16,8 @@ export default function HomePageTab() {
     author: "Octavio Paz",
     ctaLabel: "OPERE",
     ctaHref: "/opere",
-    textColor: "white", // white | black
-    overlay: "black", // black | white
+    textColor: "white",
+    overlay: "black",
   });
 
   const [previewFile, setPreviewFile] = useState<string | null>(null);
@@ -34,9 +34,27 @@ export default function HomePageTab() {
     reader.readAsDataURL(file);
   };
 
-  const handleSave = () => {
-    console.log("Saved hero data:", hero, "Uploaded Image:", previewFile);
-    alert("HomePage updated!");
+  const handleSave = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/admin/homepage/hero", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(hero),
+      });
+
+      const data = await res.json();
+
+      if (data.status) {
+        alert("✅ HomePage updated successfully!");
+      } else {
+        alert("❌ Update failed: " + data.error);
+      }
+    } catch (error) {
+      console.error(error);
+      alert("❌ Error saving homepage");
+    }
   };
 
   return (
@@ -126,31 +144,6 @@ export default function HomePageTab() {
                 onChange={(e) => handleChange("ctaHref", e.target.value)}
                 className="bg-gray-50 dark:bg-black/40 border-gray-200 dark:border-zinc-700"
               />
-            </div>
-
-            {/* Text & Overlay Colors */}
-            <div>
-              <Label>Text Color</Label>
-              <select
-                value={hero.textColor}
-                onChange={(e) => handleChange("textColor", e.target.value)}
-                className="w-full rounded-md border border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-black/40 px-3 py-2"
-              >
-                <option value="white">White</option>
-                <option value="black">Black</option>
-              </select>
-            </div>
-
-            <div>
-              <Label>Overlay Color</Label>
-              <select
-                value={hero.overlay}
-                onChange={(e) => handleChange("overlay", e.target.value)}
-                className="w-full rounded-md border border-gray-200 dark:border-zinc-700 bg-gray-50 dark:bg-black/40 px-3 py-2"
-              >
-                <option value="black">Dark Overlay</option>
-                <option value="white">Light Overlay</option>
-              </select>
             </div>
           </div>
 

@@ -1,0 +1,27 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model DynamicPart {
+  id           Int       @id @default(autoincrement())
+  page         String
+  key          String
+  title_1      String?
+  title_2      String?
+  image_1      String?
+  image_2      String?
+  description  String?
+  link_title_1 String?
+  link_1       String?
+  link_title_2 String?
+  link_2       String?
+  created_at   DateTime  @default(now())
+  updated_at   DateTime  @updatedAt
+
+  @@unique([page, key])
+}
