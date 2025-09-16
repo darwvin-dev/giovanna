@@ -6,7 +6,7 @@ const router = express.Router();
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "public/uploads");
+    cb(null, "public/dynamic-parts"); 
   },
   filename: (req, file, cb) => {
     const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
@@ -16,7 +16,8 @@ const storage = multer.diskStorage({
 
 const upload = multer({ storage });
 
-router.post("/homepage/hero", upload.single("image_1"), createOrUpdateHomeHero);
-router.get("/get-dynamic-part", getDynamicPart);
+router.post("/homepage/hero", upload.single("image"), createOrUpdateHomeHero);
+
+router.get("/dynamic-part/:key", getDynamicPart);
 
 export default router;

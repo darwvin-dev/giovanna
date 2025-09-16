@@ -1,29 +1,26 @@
-// app/admin/homepage/page.tsx
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Card, CardHeader, CardTitle, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
 import { Button } from "@/components/ui/button";
-import { Switch } from "@/components/ui/switch";
+
+type HeroData = {
+  image: string;
+  quote: string;
+  author: string;
+  ctaLabel: string;
+  ctaHref: string;
+};
 
 export default function HomePageTab() {
-  const [hero, setHero] = useState({
-    image: "/alice5.jpg",
-    quote: "La memoria è un presente che non finisce mai di passare",
-    author: "Octavio Paz",
-    ctaLabel: "OPERE",
-    ctaHref: "/opere",
-    textColor: "white",
-    overlay: "black",
-  });
-
+  const [hero, setHero] = useState<HeroData | null>(null);
   const [previewFile, setPreviewFile] = useState<string | null>(null);
 
-  const handleChange = (field: keyof typeof hero, value: string) => {
-    setHero((prev) => ({ ...prev, [field]: value }));
+  const handleChange = (field: keyof HeroData, value: string) => {
+    setHero((prev) => (prev ? { ...prev, [field]: value } : prev));
   };
 
   const handleFileUpload = (file: File) => {
@@ -35,13 +32,27 @@ export default function HomePageTab() {
   };
 
   const handleSave = async () => {
+    if (!hero) return;
+
     try {
+      const formData = new FormData();
+      formData.append("quote", hero.quote || "");
+      formData.append("author", hero.author || "");
+      formData.append("ctaLabel", hero.ctaLabel || "");
+      formData.append("ctaHref", hero.ctaHref || "");
+
+      if (
+        previewFile &&
+        (document.querySelector("#imageInput") as HTMLInputElement)?.files?.[0]
+      ) {
+        const file = (document.querySelector("#imageInput") as HTMLInputElement)
+          .files![0];
+        formData.append("image", file);
+      }
+
       const res = await fetch("http://localhost:5000/api/admin/homepage/hero", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(hero),
+        body: formData,
       });
 
       const data = await res.json();
@@ -56,6 +67,32 @@ export default function HomePageTab() {
       alert("❌ Error saving homepage");
     }
   };
+
+  const getData = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/api/homepage");
+      const data = await res.json();
+
+      if (data.status && data.data) {
+        const d = data.data;
+        setHero({
+          quote: d.title_1 || "",
+          author: d.title_2 || "",
+          image: d.image_1 || "",
+          ctaLabel: d.link_title_1 || "",
+          ctaHref: d.link_1 || "",
+        });
+      }
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  useEffect(() => {
+    if (!hero) getData();
+  }, []);
+
+  if (!hero) return <p className="text-center">Loading...</p>;
 
   return (
     <div className="space-y-6">
@@ -73,16 +110,7 @@ export default function HomePageTab() {
               alt="Hero Preview"
               className="object-cover w-full h-full"
             />
-            <div
-              className={`absolute inset-0 flex flex-col items-center justify-center px-6 text-center`}
-              style={{
-                backgroundColor:
-                  hero.overlay === "black"
-                    ? "rgba(0,0,0,0.4)"
-                    : "rgba(255,255,255,0.4)",
-                color: hero.textColor,
-              }}
-            >
+            <div className="absolute inset-0 flex flex-col items-center justify-center px-6 text-center">
               <blockquote className="mb-3 text-lg md:text-2xl italic leading-snug">
                 {hero.quote}
               </blockquote>
@@ -100,22 +128,20 @@ export default function HomePageTab() {
             <div className="sm:col-span-2">
               <Label>Upload Image</Label>
               <Input
+                id="imageInput"
                 type="file"
                 accept="image/*"
                 onChange={(e) =>
                   e.target.files && handleFileUpload(e.target.files[0])
                 }
-                className="bg-gray-50 dark:bg-black/40 border-gray-200 dark:border-zinc-700 cursor-pointer"
               />
             </div>
 
-            {/* Quote */}
             <div className="sm:col-span-2">
               <Label>Quote</Label>
               <Textarea
                 value={hero.quote}
                 onChange={(e) => handleChange("quote", e.target.value)}
-                className="bg-gray-50 dark:bg-black/40 border-gray-200 dark:border-zinc-700"
               />
             </div>
 
@@ -124,7 +150,6 @@ export default function HomePageTab() {
               <Input
                 value={hero.author}
                 onChange={(e) => handleChange("author", e.target.value)}
-                className="bg-gray-50 dark:bg-black/40 border-gray-200 dark:border-zinc-700"
               />
             </div>
 
@@ -133,7 +158,6 @@ export default function HomePageTab() {
               <Input
                 value={hero.ctaLabel}
                 onChange={(e) => handleChange("ctaLabel", e.target.value)}
-                className="bg-gray-50 dark:bg-black/40 border-gray-200 dark:border-zinc-700"
               />
             </div>
 
@@ -142,7 +166,6 @@ export default function HomePageTab() {
               <Input
                 value={hero.ctaHref}
                 onChange={(e) => handleChange("ctaHref", e.target.value)}
-                className="bg-gray-50 dark:bg-black/40 border-gray-200 dark:border-zinc-700"
               />
             </div>
           </div>
