@@ -10,9 +10,8 @@ export const getAboutData = async (req, res) => {
       where: { page_key: { page: "about", key: "overview" } },
     });
 
-    const exhibitions = await prisma.dynamicPart.findMany({
-      where: { page: "about", key: "exhibition" },
-      orderBy: { created_at: "desc" },
+    const exhibitions = await prisma.dynamicPart.findUnique({
+      where: { page_key: { page: "about", key: "exhibitions" } },
     });
 
     res.json({

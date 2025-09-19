@@ -5,143 +5,19 @@ import Link from "next/link";
 
 /* ---------------- Types ---------------- */
 
-type ExhibitionItem = {
+export type ExhibitionItem = {
   year: string | number;
   description: string;
-  href?: string;
 };
 
 type ExhibitionsSectionProps = {
   title?: string;
   background?: string;
-  items?: ExhibitionItem[];
+  items: ExhibitionItem[];
   className?: string;
   initialVisibleYears?: number;
 };
 
-/* ---------------- Default Data ---------------- */
-
-const DEFAULT_ITEMS: ExhibitionItem[] = [
-  {
-    year: 2021,
-    description: "Fermento — Spazio Eventi, Michele Satta, Bolgheri",
-  },
-  {
-    year: 2019,
-    description:
-      "Abstracta Vitae — Sale Affrescate di Palazzo Comunale, Pistoia",
-  },
-  {
-    year: 2019,
-    description:
-      "Riflessi nell’ombra (bipersonale), Fondazione BCC di Castagneto Carducci, Livorno",
-  },
-  {
-    year: 2018,
-    description:
-      "In ogni modo (collettiva), Fornace Pasquinucci, Limite sull’Arno (FI)",
-  },
-  {
-    year: 2017,
-    description: "Inception (bipersonale), Lumen Gallery, Firenze",
-  },
-  {
-    year: 2016,
-    description: "Libro d’artista (collettiva), Stanze del Teatro, Pontremoli",
-  },
-  { year: 2015, description: "13 a tavola (collettiva), Palazzo Tucci, Lucca" },
-  {
-    year: 2015,
-    description: "Astrazioni (collettiva), Galleria Plaumann, Milano",
-  },
-  {
-    year: 2014,
-    description:
-      "Rosso di donne (collettiva), Galleria Senzalimitearte, Colle Val d’Elsa",
-  },
-  {
-    year: 2014,
-    description:
-      "International Workshop of Painter Symposium, Stary Sącz, Polonia",
-  },
-  {
-    year: 2014,
-    description:
-      "Metaphors (installazione), Spazio Paretra — Marble Weeks, Carrara",
-  },
-  {
-    year: 2014,
-    description: "Memorie in superficie, AdeleC Showroom, Firenze",
-  },
-  {
-    year: 2013,
-    description:
-      "InTime (collettiva), Present Contemporary Art Gallery, Firenze",
-  },
-  {
-    year: 2013,
-    description: "Wallmemories (personale), Spazio Lumen, Firenze",
-  },
-  {
-    year: 2013,
-    description: "Reality Fluids (collettiva), Nhow Hotel, Milano",
-  },
-  {
-    year: 2013,
-    description: "Artur-o (installazione artistica), Villa Fani, Firenze",
-  },
-  {
-    year: 2012,
-    description: "Elite Collection — DieciRosso Art Gallery, Firenze",
-  },
-  {
-    year: 2012,
-    description:
-      "Fuorisalone — Tactile Surface, Chiostro di San Simpliciano, Milano",
-  },
-  {
-    year: 2012,
-    description: "Flussartisti, Sala Comunale, Castellina in Chianti",
-  },
-  { year: 2012, description: "Personale, Paratissima, Torino" },
-  {
-    year: 2011,
-    description:
-      "Madame Vendange (personale), Libreria Gogol — Fuorisalone 2011, Milano",
-  },
-  {
-    year: 2010,
-    description:
-      "Colloqui Letterali, Chiesa di Sant’Andrea a San Miniato, Pisa",
-  },
-  { year: 2010, description: "Trame d’artista, Spazio Dedon, Milano" },
-  {
-    year: 2009,
-    description:
-      "Adrenalina — l’arte emerge in nuove direzioni, Ex Mercato Ebraico, Roma",
-  },
-  { year: 2009, description: "Livello 16 — Fuorisalone 2009, Milano" },
-  {
-    year: 2008,
-    description:
-      "Tecniche miste (collettiva), Villa Caruso, Lastra a Signa (FI)",
-  },
-  { year: 2008, description: "Signora delle Mele — Fuorisalone 2008, Milano" },
-  { year: 2007, description: "Verdeolivo — Fuorisalone 2007, Milano" },
-  { year: 2006, description: "Levia Gravia, Palazzo Ducale, Genova" },
-  {
-    year: 2006,
-    description: "Misteroggetto (personale), Galleria Blucammello, Livorno",
-  },
-];
-
-/* ---------------- Utils ---------------- */
-
-const isExternal = (href?: string) => href?.startsWith("http");
-
-/* ---------------- Hooks ---------------- */
-
-// Detect reduced motion preference
 function useReducedMotion() {
   const [reduced, setReduced] = useState(false);
 
@@ -253,32 +129,9 @@ function TimelineItem({
         transform: shown ? "translateY(0)" : "translateY(12px)",
       };
 
-  const linkProps = {
-    className:
-      "block rounded-xl focus:outline-none focus-visible:ring-2 focus-visible:ring-amber-300/70",
-  };
-
   return (
     <li ref={ref} className="ml-8 sm:ml-10" style={wrapperStyle}>
-      {item.href ? (
-        isExternal(item.href) ? (
-          <a
-            {...linkProps}
-            href={item.href}
-            target="_blank"
-            rel="noopener noreferrer"
-            aria-label={`${item.description} — apre in nuova scheda`}
-          >
-            {content}
-          </a>
-        ) : (
-          <Link {...linkProps} href={item.href} aria-label={item.description}>
-            {content}
-          </Link>
-        )
-      ) : (
-        content
-      )}
+      {content}
     </li>
   );
 }
@@ -327,9 +180,9 @@ function YearGroup({
 export default function ExhibitionsSection({
   title = "Esposizioni",
   background = "/Alice1.jpg",
-  items = DEFAULT_ITEMS,
-  className = "py-8 mt-8",
+  className = "py-8",
   initialVisibleYears = 6,
+  items,
 }: ExhibitionsSectionProps) {
   const reduced = useReducedMotion();
 
@@ -350,7 +203,6 @@ export default function ExhibitionsSection({
 
   const { ref: headerRef, shown: headerShown } = useInView<HTMLDivElement>();
   const timelineRef = useRef<HTMLDivElement>(null);
-  const navRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const root = timelineRef.current;

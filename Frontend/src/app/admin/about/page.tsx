@@ -12,7 +12,6 @@ import {
   AboutOverviewType,
   ExhibitionItem,
 } from "@/types/admin-about";
-import { DynamicPart } from "@/types/dynamic-part";
 
 /* ---- Extend types with local-only props ---- */
 type HeroWithFile = AboutHeroType & { _file?: File; _preview?: string };
@@ -49,11 +48,12 @@ export default function AdminAboutPage() {
             : [],
         });
 
+        const exhibitionsTemp = JSON.parse(exhibitions?.description);
+
         setExhibitions(
-          exhibitions.map((ex: DynamicPart) => ({
-            year: parseInt(ex?.title_1 || "") || new Date().getFullYear(),
+          exhibitionsTemp.map((ex: {year: string, description: string}) => ({
+            year: parseInt(ex?.year || "") || new Date().getFullYear(),
             description: ex.description || "",
-            href: ex.link_1 || "",
           }))
         );
       }

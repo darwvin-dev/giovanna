@@ -9,7 +9,7 @@ const cormorant = Cormorant_Garamond({
 
 type AboutHeroProps = {
   image?: string;
-  title?: string;
+  title: string;
   subtitle?: string;
   overlay?: boolean;
   className?: string;
@@ -17,8 +17,8 @@ type AboutHeroProps = {
 };
 
 export default function AboutHero({
-  image = "/alice4.jpg",
-  title = "Alice Corbetta",
+  image,
+  title,
   subtitle,
   overlay = true,
   className = "",
@@ -31,8 +31,8 @@ export default function AboutHero({
     >
       <div className="absolute inset-0 z-0 transform-gpu transition-transform duration-700 ease-out hover:scale-105">
         <Image
-          src={image}
-          alt="Alice Corbetta"
+          src={`${process.env.NEXT_PUBLIC_DOMAIN_ADDRESS}/${image}`}
+          alt={title}
           fill
           priority
           sizes="100vw"
@@ -94,7 +94,7 @@ export default function AboutHero({
       {/* Signature */}
       <div className="absolute bottom-8 right-8 opacity-70">
         <div className={`${poiret.className} text-white/80 text-sm tracking-widest rotate-0 transform`}>
-          ALICE CORBETTA
+          {subtitle}
         </div>
       </div>
     </section>
