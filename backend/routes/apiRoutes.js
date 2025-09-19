@@ -1,6 +1,7 @@
 import express from "express";
 import prisma from "../lib/prisma.js";
 import NodeCache from "node-cache";
+import { getAboutData } from "../controllers/api/apiController.js";
 
 const router = express.Router();
 const cache = new NodeCache({ stdTTL: 60 });
@@ -23,5 +24,7 @@ router.get("/homepage", async (req, res) => {
     res.status(500).json({ status: false, error: err.message });
   }
 });
+
+router.get("/about", getAboutData);
 
 export default router;

@@ -1,4 +1,3 @@
-// app/admin/layout.tsx
 "use client";
 
 import { useState, useEffect } from "react";
@@ -6,15 +5,13 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
   Menu,
-  Bell,
-  Sun,
-  Moon,
   User,
   LogOut,
   Settings,
   Home,
   FileText,
   Image,
+  Contact,
   MessageSquare,
   Monitor,
 } from "lucide-react";
@@ -26,6 +23,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
 
   const navigation = [
     { name: "Dashboard", href: "/admin", icon: <Home className="w-5 h-5" /> },
+    { name: "about", href: "/admin/about", icon: <Contact className="w-5 h-5" /> },
     { name: "Opere", href: "/admin/artworks", icon: <Image className="w-5 h-5" /> },
     { name: "Blog", href: "/admin/blog", icon: <FileText className="w-5 h-5" /> },
     { name: "Messaggi", href: "/admin/messages", icon: <MessageSquare className="w-5 h-5" /> },

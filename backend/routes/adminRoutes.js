@@ -1,6 +1,7 @@
 import express from "express";
 import multer from "multer";
-import { createOrUpdateHomeHero, getDynamicPart } from "../controllers/adminController.js";
+import { createOrUpdateHomeHero, getDynamicPart } from "../controllers/admin/homeController.js";
+import { createOrUpdateAboutExhibitions, createOrUpdateAboutHero, createOrUpdateAboutOverview } from "../controllers/admin/AboutController.js";
 
 const router = express.Router();
 
@@ -19,5 +20,11 @@ const upload = multer({ storage });
 router.post("/homepage/hero", upload.single("image"), createOrUpdateHomeHero);
 
 router.get("/dynamic-part/:key", getDynamicPart);
+
+router.post("/about/hero", upload.single("image"), createOrUpdateAboutHero);
+
+router.post("/about/overview", upload.single("image"), createOrUpdateAboutOverview);
+
+router.post("/about/exhibitions", createOrUpdateAboutExhibitions);
 
 export default router;

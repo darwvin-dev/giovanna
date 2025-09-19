@@ -106,7 +106,7 @@ export default function HomePageTab() {
           {/* Preview */}
           <div className="relative w-full h-64 rounded-lg overflow-hidden border border-gray-200 dark:border-zinc-700">
             <img
-              src={previewFile || hero.image}
+              src={previewFile || `${process.env.NEXT_PUBLIC_DOMAIN_ADDRESS}${hero.image}`}
               alt="Hero Preview"
               className="object-cover w-full h-full"
             />
